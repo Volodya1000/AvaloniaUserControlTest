@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="using:UserControlTest.ViewModels.ViewModelsFolder"
+             x:Class="UserControlTest.AvaloniaApp.Views.NoteControl"
+             x:DataType="vm:NoteViewModel">
+  <Border BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5">
+    <StackPanel Spacing="5">
+
+      <!-- Edit mode -->
+      <StackPanel Orientation="Horizontal" Spacing="5"
+                  IsVisible="{Binding IsEditing}">
+        <TextBox Text="{Binding EditableText}" Width="200" />
+        <Button Content="Сохранить" Command="{Binding SaveCommand}" />
+        <Button Content="Отмена" Command="{Binding CancelCommand}" />
+      </StackPanel>
+
+      <!-- Read-only mode -->
+      <StackPanel Orientation="Horizontal" Spacing="5"
+                  IsVisible="{Binding IsNotEditing}">
+        <TextBlock Text="{Binding Text}" VerticalAlignment="Center" />
+        <Button Content="Редактировать" Command="{Binding StartEditCommand}" />
+        <Button Content="Удалить" Command="{Binding DeleteCommand}" />
+      </StackPanel>
+
+    </StackPanel>
+  </Border>
+</UserControl>
