@@ -1,37 +1,16 @@
 ﻿using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using System.Reactive;
 
 namespace UserControlTest.ViewModels.ViewModelsFolder;
 
 public class NoteViewModel : ReactiveObject
 {
-    private string _text;
-    public string Text
-    {
-        get => _text;
-        private set => this.RaiseAndSetIfChanged(ref _text, value);
-    }
+    [Reactive] public string Text { get; private set; } = "Новая заметка";
+    [Reactive] public string EditableText { get; set; }
+    [Reactive] public bool IsEditing { get; private set; }
 
-    private string _editableText;
-    public string EditableText
-    {
-        get => _editableText;
-        set => this.RaiseAndSetIfChanged(ref _editableText, value);
-    }
-
-    private bool _isEditing;
-    public bool IsEditing
-    {
-        get => _isEditing;
-        private set
-        {
-            this.RaiseAndSetIfChanged(ref _isEditing, value);
-            this.RaisePropertyChanged(nameof(IsNotEditing)); // 💡 уведомляем, что IsNotEditing тоже изменился
-        }
-    }
-
-    public bool IsNotEditing => !IsEditing;
-
+    // Команды
     public ReactiveCommand<Unit, Unit> StartEditCommand { get; }
     public ReactiveCommand<Unit, Unit> SaveCommand { get; }
     public ReactiveCommand<Unit, Unit> CancelCommand { get; }
@@ -39,31 +18,29 @@ public class NoteViewModel : ReactiveObject
 
     public NoteViewModel(Action<NoteViewModel> onDelete)
     {
-        _text = "Новая заметка";
-        _editableText = _text;
-        _isEditing = false;
+        EditableText = Text;
 
-        StartEditCommand = ReactiveCommand.Create(() =>
-        {
-            EditableText = Text;
-            IsEditing = true;
-        });
+        // Инициализация команд
+        StartEditCommand = ReactiveCommand.Create(StartEdit);
+        SaveCommand = ReactiveCommand.Create(Save);
+        CancelCommand = ReactiveCommand.Create(Cancel);
+        DeleteCommand = ReactiveCommand.Create(() => onDelete?.Invoke(this));
+    }
 
-        SaveCommand = ReactiveCommand.Create(() =>
-        {
-            Text = EditableText;
-            IsEditing = false;
-        });
+    private void StartEdit()
+    {
+        EditableText = Text;
+        IsEditing = true;
+    }
 
-        CancelCommand = ReactiveCommand.Create(() =>
-        {
-            EditableText = Text;
-            IsEditing = false;
-        });
+    private void Save()
+    {
+        Text = EditableText;
+        IsEditing = false;
+    }
 
-        DeleteCommand = ReactiveCommand.Create(() =>
-        {
-            onDelete?.Invoke(this);
-        });
+    private void Cancel()
+    {
+        IsEditing = false;
     }
 }

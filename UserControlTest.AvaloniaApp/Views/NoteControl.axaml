@@ -9,7 +9,7 @@
   <Border BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5">
     <StackPanel Spacing="5">
 
-      <!-- Edit mode -->
+      <!-- Режим редактирования (видим только при IsEditing=true) -->
       <StackPanel Orientation="Horizontal" Spacing="5"
                   IsVisible="{Binding IsEditing}">
         <TextBox Text="{Binding EditableText}" Width="200" />
@@ -17,9 +17,9 @@
         <Button Content="Отмена" Command="{Binding CancelCommand}" />
       </StackPanel>
 
-      <!-- Read-only mode -->
+      <!-- Режим просмотра (видим только при IsEditing=false) -->
       <StackPanel Orientation="Horizontal" Spacing="5"
-                  IsVisible="{Binding IsNotEditing}">
+                  IsVisible="{Binding !IsEditing}">
         <TextBlock Text="{Binding Text}" VerticalAlignment="Center" />
         <Button Content="Редактировать" Command="{Binding StartEditCommand}" />
         <Button Content="Удалить" Command="{Binding DeleteCommand}" />
