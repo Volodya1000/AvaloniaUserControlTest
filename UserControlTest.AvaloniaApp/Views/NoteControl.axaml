@@ -2,11 +2,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:vm="using:UserControlTest.ViewModels.ViewModelsFolder"
              x:Class="UserControlTest.AvaloniaApp.Views.NoteControl"
              x:DataType="vm:NoteViewModel">
-  <Border BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5">
+  <Border BorderBrush="Gray" BorderThickness="3" Margin="5" Padding="5">
     <StackPanel Spacing="5">
 
       <!-- Режим редактирования (видим только при IsEditing=true) -->
